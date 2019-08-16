@@ -8,6 +8,7 @@ function App() {
   const [homeScore, setHomeScore] = useState(0);
   const [awayScore, setAwayScore] = useState(0);
   const [timer, setTimer] = useState(25);
+  
   let homeTeamName = "Lions";
   let awayTeamName = "Tigers";
   const touchdownHome = e => {
@@ -22,7 +23,19 @@ function App() {
   const fieldGoalAway = e => {
     setAwayScore(awayScore+3);
   }
+  const resetGame = e => {
+    setAwayScore(0);
+    setHomeScore(0);
+    setTimer(25);
+  }
+  const firstDown = e => {
+    setDown(1);
+    setToGo(10);
 
+  }
+  const moveBall = e => {
+    setBallOn(Math.floor(Math.random()*100))
+  }
 
   return (
     <div className="container">
@@ -49,6 +62,12 @@ function App() {
 
           <button className="homeButtons__touchdown" onClick = {touchdownHome}>Home Touchdown</button>
           <button className="homeButtons__fieldGoal" onClick={fieldGoalHome}>Home Field Goal</button>
+        </div>
+        <div className="other-buttons">
+          <button className="resetButton" onClick={resetGame}>Reset Game</button> 
+          <button className="firstDown" onClick={firstDown}>First Down</button> 
+          <button className="moveBall" onClick={moveBall}>Move Ball</button> 
+          <button className="setQuarter" onClick={setQuarter}>Change Quarter</button> 
         </div>
         <div className="awayButtons">
           <button className="awayButtons__touchdown" onClick={touchdownAway}>Away Touchdown</button>
