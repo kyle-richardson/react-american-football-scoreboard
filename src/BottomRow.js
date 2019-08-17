@@ -1,12 +1,26 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import "./App.css";
 
 
-const [quarter, setQuarter] = useState(1);
-const [down, setDown] = useState(1);
-const [toGo, setToGo] = useState(10);
-const [ballOn, setBallOn] = useState(20);
-const BottomRow = () => {
+  
+function BottomRow() {
+  const [quarter,setQuarter] = useState(1); 
+  const [down, setDown] = useState(1);
+  const [toGo, setToGo] = useState(10);
+  const [ballOn, setBallOn] = useState(20);
+  
+  const firstDown = e => {
+    setDown(1);
+    setToGo(10);
+  }
+  const moveBall = e => {
+    setBallOn(Math.floor(Math.random()*100));
+  }
+  const nextQuarter = e => {
+    if (quarter = 4) quarter = 0;
+    setQuarter(quarter+1);
+    
+  }
   return (
     <div className="bottomRow">
       <div className="down">
