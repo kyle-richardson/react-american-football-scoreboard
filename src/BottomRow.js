@@ -14,13 +14,24 @@ function BottomRow() {
     setToGo(10);
   }
   const moveBall = e => {
-    setBallOn(Math.floor(Math.random()*100));
+    setBallOn(Math.floor(Math.random()*100)+1);
   }
   const nextQuarter = e => {
-    if (quarter = 4) quarter = 0;
+    if (quarter == 4) setQuarter(0);
     setQuarter(quarter+1);
-    
   }
+
+  useEffect(() => {
+    firstDown();
+  }, [down, toGo]);
+  useEffect(() => {
+    moveBall();
+  }, [ballOn]);
+  // useEffect(() => {
+  //   nextQuarter();
+  // }, [quarter]);
+  
+  
   return (
     <div className="bottomRow">
       <div className="down">
