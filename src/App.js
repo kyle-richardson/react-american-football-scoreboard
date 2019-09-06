@@ -2,7 +2,7 @@
 import React, {useState, useEffect} from "react";
 import "./App.css";
 import BottomRow from "./BottomRow";
-import { publicEncrypt } from "crypto";
+// import { publicEncrypt } from "crypto";
 
 function App() {
   //TODO: STEP 2 - Establish your applictaion's state with some useState hooks.  You'll need one for the home score and another for the away score.
@@ -15,32 +15,19 @@ function App() {
   const [toGo, setToGo] = useState(10);
   
 
-  let homeTeamName = "Lions";
-  let awayTeamName = "Tigers";
-  let homePoss = `${homeTeamName} 0`;
-  let awayPoss = `${awayTeamName} 0`;
-  let homeDisplayed = homePoss;
+  const homeTeamName = "Lions";
+  const awayTeamName = "Tigers";
+  const homePos = `${homeTeamName} 0`;
+  const awayPos = `${awayTeamName} 0`;
+  let homeDisplayed = homeTeamName;
   let awayDisplayed = awayTeamName;
+  
 
   const [hasBall, setHasBall] = useState(homeTeamName);
 
   useEffect(() => {
-    setHasBall(awayTeamName);
-    awayDisplayed = awayPoss;
+    hasBall===homeTeamName ? console.log(`home just scored. expected: away team has ball, actual: ${hasBall} has ball`) : console.log(`away just scored. expected: home team has ball, actual: ${hasBall} has ball`);
   }, [hasBall]);
-
-  const checkPos = e => {
-    if(hasBall===homeTeamName) {
-      homeDisplayed = homeTeamName;
-      awayDisplayed = awayPoss;
-      setHasBall(awayTeamName);
-    }
-    else {
-      awayDisplayed = awayTeamName;
-      homeDisplayed = homePoss;
-      setHasBall(homeTeamName);
-    }
-  }
 
   const decreaseTimer = e => {
     if(timer >0) setTimer(timer-1);
@@ -86,15 +73,18 @@ function App() {
     firstDown();
     setBallOn(100-ballOn);
     if(hasBall===homeTeamName) {
-      homeDisplayed = homeTeamName;
-      awayDisplayed = awayPoss;
       setHasBall(awayTeamName);
-    }
+      homeDisplayed = homePos; 
+      awayDisplayed = awayTeamName; 
+      alert(`${awayTeamName} now have the ball.`);
+    } 
     else {
-      awayDisplayed = awayTeamName;
-      homeDisplayed = homePoss;
       setHasBall(homeTeamName);
+      awayDisplayed = awayPos;
+      homeDisplayed = homeTeamName;
+      alert(`${homeTeamName} now have the ball.`);
     }
+    
   }
   
   const fieldGoal = e => {
@@ -134,9 +124,9 @@ function App() {
     if(down===4 && ballOn > 69) fieldGoal();
     else if(down===4 && toGo>4) punt();
     else{
+      let num = 0;
       const amount = prompt('How many yards were gained or lost? (use negative for lost yardage)');
-      const num = parseInt(amount);
-      if (amount===null) num = 0;
+      if (!isNaN(amount)) num = parseInt(amount);  
       setBallOn(ballOn + num);
       if(ballOn+num >99) touchdown();
       else if(ballOn+num <1) touchback();
@@ -176,11 +166,6 @@ function App() {
     else if (awayScore > homeScore) alert(`The ${awayTeamName} win!`);
     else alert(`The Game is over.  It's a tie!`);
     resetGame()
-  }
-
-  const changeToGo = e => {
-    setToGo(Math.floor(Math.random()*10)+1);
-    decreaseTimer();
   }
 
   return (
