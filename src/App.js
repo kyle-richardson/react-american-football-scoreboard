@@ -1,11 +1,9 @@
-//TODO: STEP 1 - Import the useState hook.
 import React, {useState, useEffect} from "react";
 import "./App.css";
 import BottomRow from "./BottomRow";
 // import { publicEncrypt } from "crypto";
 
 function App() {
-  //TODO: STEP 2 - Establish your applictaion's state with some useState hooks.  You'll need one for the home score and another for the away score.
   const [homeScore, setHomeScore] = useState(0);
   const [awayScore, setAwayScore] = useState(0);
   const [timer, setTimer] = useState(10);
@@ -19,15 +17,12 @@ function App() {
   const awayTeamName = "Tigers";
   const homePos = `${homeTeamName} 0`;
   const awayPos = `${awayTeamName} 0`;
-  let homeDisplayed = homeTeamName;
-  let awayDisplayed = awayTeamName;
   
 
   const [hasBall, setHasBall] = useState(homeTeamName);
 
-  useEffect(() => {
-    hasBall===homeTeamName ? console.log(`home just scored. expected: away team has ball, actual: ${hasBall} has ball`) : console.log(`away just scored. expected: home team has ball, actual: ${hasBall} has ball`);
-  }, [hasBall]);
+  // useEffect(() => {
+  // }, [hasBall, ballOn, quarter, down, toGo, timer, awayScore, homeScore]);
 
   const decreaseTimer = e => {
     if(timer >0) setTimer(timer-1);
@@ -74,14 +69,10 @@ function App() {
     setBallOn(100-ballOn);
     if(hasBall===homeTeamName) {
       setHasBall(awayTeamName);
-      homeDisplayed = homePos; 
-      awayDisplayed = awayTeamName; 
       alert(`${awayTeamName} now have the ball.`);
     } 
     else {
       setHasBall(homeTeamName);
-      awayDisplayed = awayPos;
-      homeDisplayed = homeTeamName;
       alert(`${homeTeamName} now have the ball.`);
     }
     
@@ -131,9 +122,11 @@ function App() {
       if(ballOn+num >99) touchdown();
       else if(ballOn+num <1) touchback();
       else{
-        setToGo(toGo - num);
         if( toGo-num <1 ) firstDown();
-        else nextDown();
+        else {
+          setToGo(toGo - num);
+          nextDown();
+        }
       }
     }
     decreaseTimer();
@@ -173,24 +166,24 @@ function App() {
       <section className="scoreboard">
         <div className="topRow">
           <div className="home">
-            <h2 className="home__name">{homeDisplayed}</h2>
-
-            {/* TODO STEP 3 - We need to change the hardcoded values in these divs to accept dynamic values from our state. */}
-
+            <h2 className="home__name">{hasBall=== homeTeamName ? homePos : homeTeamName}</h2>
             <div className="home__score">{homeScore}</div>
           </div>
           <div className="timer">{timer}</div>
           <div className="away">
-            <h2 className="away__name">{awayDisplayed}</h2>
+            <h2 className="away__name">{hasBall=== awayTeamName ? awayPos : awayTeamName}</h2>
             <div className="away__score">{awayScore}</div>
           </div>
         </div>
-        <BottomRow ballOn={ ballOn } down={ down } quarter={ quarter } toGo={ toGo } />
+        <BottomRow 
+          ballOn={ ballOn } 
+          down={ down } 
+          quarter={ quarter } 
+          toGo={ toGo } 
+        />
       </section>
       <section className="buttons">
         <div className="homeButtons">
-          {/* TODO STEP 4 - Now we need to attach our state setter functions to click listeners. */}
-
           <button className="homeButtons__touchdown" onClick = {touchdownHome}>Home Touchdown</button>
           <button className="homeButtons__fieldGoal" onClick={fieldGoalHome}>Home Field Goal</button>
         </div>
