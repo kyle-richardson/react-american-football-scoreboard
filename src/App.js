@@ -64,9 +64,11 @@ function App() {
     setToGo(10);
   }
 
-  const changePossession = e => {
+  const changePossession = (amount) => {
     firstDown();
-    setBallOn(100-ballOn);
+    let num = 0;
+    if(amount) num=amount
+    setBallOn(100-num-ballOn);
     if(hasBall===homeTeamName) {
       setHasBall(awayTeamName);
       alert(`${awayTeamName} now have the ball.`);
@@ -106,14 +108,14 @@ function App() {
 
   const punt = e => {
     alert('Punt');
-    setBallOn(ballOn+(Math.floor(Math.random()*21)+20));
-    changePossession();
+    const num = ballOn+(Math.floor(Math.random()*21)+15);
+    changePossession(num);
   }
 
   const moveBall = e => {
     e.preventDefault();
     if(down===4 && ballOn > 69) fieldGoal();
-    else if(down===4 && toGo>4) punt();
+    else if(down===4 && toGo>3) punt();
     else{
       let num = 0;
       const amount = prompt('How many yards were gained or lost? (use negative for lost yardage)');
@@ -183,18 +185,18 @@ function App() {
         />
       </section>
       <section className="buttons">
-        <div className="homeButtons">
+        {/* <div className="homeButtons">
           <button className="homeButtons__touchdown" onClick = {touchdownHome}>Home Touchdown</button>
           <button className="homeButtons__fieldGoal" onClick={fieldGoalHome}>Home Field Goal</button>
-        </div>
+        </div> */}
         <div className="other-buttons">
           <button className="moveBall" onClick={moveBall}>Move Ball</button> 
           <button className="resetButton" onClick={resetGame}>Reset Game</button> 
         </div>
-        <div className="awayButtons">
+        {/* <div className="awayButtons">
           <button className="awayButtons__touchdown" onClick={touchdownAway}>Away Touchdown</button>
           <button className="awayButtons__fieldGoal" onClick={fieldGoalAway}>Away Field Goal</button>
-        </div>
+        </div> */}
       </section>
     </div>
   );
